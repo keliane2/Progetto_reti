@@ -3,7 +3,7 @@
 #client 
 
 import socket
-import threading
+from threading import Thread
 
 # IP address del server ricevente
 SERVER_HOST = "127.0.0.1"
@@ -11,26 +11,33 @@ SERVER_PORT = 5001
 # riceve 4096 bytes
 BUFFER_SIZE = 1024
 
-# funzione per ricezione di messaggi dal server
-def receive_messages(client_socket):
+
+def receive(self):
+    # gestisce la ricezione di messaggi
     while True:
-        # legge 1024 bytes dal socket
         try:
-            message = client_socket.recv(BUFFER_SIZE).decode('utf-8','ignore')
+            message = self.client_socket.recv(BUFFER_SIZE).decode('utf-8')
             if message:
                 print(message)
         except:
-            print("There is an error!")
-            client_socket.close()
+            print("An error occurred!")
+            self.client_socket.close()
             break
 
-# Funzione principale per il client
-if __name__ == "__main__":
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((SERVER_HOST, SERVER_PORT))
-
-    threading.Thread(target=receive_messages, args=(client_socket,)).start()
-
+def send(self):
+    # gestisce l'invio dei messaggi
     while True:
         message = input('')
-        client_socket.send(message.encode('utf-8'))
+        self.client_socket.send(bytes(message, "utf8"))
+
+if __name__ == "__main__":
+    # Creazione del socket del client
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((SERVER_HOST, SERVER_PORT))  # Connessione al server
+
+    # Avvio dei thread per ricevere e inviare messaggi
+    receive_thread = Thread(target=receive)
+    receive_thread.start()
+
+    send_thread = Thread(target=send)
+    send_thread.start()
