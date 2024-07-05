@@ -12,23 +12,23 @@ SERVER_PORT = 5001
 BUFFER_SIZE = 1024
 
 
-def receive(self):
+def receive():
     # gestisce la ricezione di messaggi
     while True:
         try:
-            message = self.client_socket.recv(BUFFER_SIZE).decode('utf-8')
+            message = client_socket.recv(BUFFER_SIZE).decode('utf-8')
             if message:
                 print(message)
         except:
             print("An error occurred!")
-            self.client_socket.close()
+            client_socket.close()
             break
 
-def send(self):
+def send():
     # gestisce l'invio dei messaggi
     while True:
         message = input('')
-        self.client_socket.send(bytes(message, "utf8"))
+        client_socket.send(bytes(message, "utf8"))
 
 if __name__ == "__main__":
     # Creazione del socket del client
