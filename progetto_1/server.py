@@ -4,10 +4,10 @@
 import socket
 from threading import Thread
 
-# IP address del server ricevente
+# IP address del server 
 SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 5001
-# riceve 4096 bytes
+# riceve 1024 bytes
 BUFFER_SIZE = 1024
 #numero di connessioni abilitate
 NUM = 50
@@ -40,6 +40,7 @@ def manage_client(client_socket):
         except:
             continue
 
+#Per stabilire la connessione client-server
 def receive_connections():
     while True:
         client_socket, client_address = server.accept()
